@@ -1,5 +1,7 @@
 import { NextRequest } from 'next/server';
 import Perplexity from '@perplexity-ai/perplexity_ai';
+import fs from 'fs';
+import path from 'path';
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,12 +28,17 @@ export async function POST(request: NextRequest) {
 
     const client = new Perplexity({ apiKey });
 
+    // Read prompt template from file
+    const promptPath = path.join(process.cwd(), 'prompt.txt');
+    const promptTemplate = fs.readFileSync(promptPath, 'utf-8');
+    const prompt = promptTemplate.replace('{topic}', topic.trim());
+
     // Create streaming chat completion
     const stream = await client.chat.completions.create({
       messages: [
         {
           role: "user",
-          content: `What were the recent developments relevant to ${topic.trim()}`
+          content: prompt
         }
       ],
       model: "sonar",
