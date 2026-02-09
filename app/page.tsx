@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function Home() {
   const [topic, setTopic] = useState('');
@@ -91,9 +93,15 @@ export default function Home() {
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Results
             </h2>
-            <div className="prose max-w-none text-gray-700 whitespace-pre-wrap">
-              {results || 'Loading...'}
-              {loading && <span className="animate-pulse">▊</span>}
+            <div className="prose prose-slate max-w-none">
+              {results ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {results}
+                </ReactMarkdown>
+              ) : (
+                'Loading...'
+              )}
+              {loading && <span className="animate-pulse ml-1">▊</span>}
             </div>
           </div>
         )}
