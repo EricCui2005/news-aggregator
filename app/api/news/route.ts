@@ -2,11 +2,26 @@ import { NextRequest } from 'next/server';
 import Perplexity from '@perplexity-ai/perplexity_ai';
 import fs from 'fs';
 import path from 'path';
+import { createClient } from '@/lib/supabase/server';
+import { decryptApiKey } from '@/lib/encryption/crypto';
 
 export async function POST(request: NextRequest) {
   try {
+    // Authenticate user
+    const supabase = await createClient();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Parse request body
-    const { topic } = await request.json();
+    const { topic, tabId } = await request.json();
 
     // Validate input
     if (!topic || typeof topic !== 'string' || topic.trim().length === 0) {
@@ -16,16 +31,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Initialize Perplexity client
-    const apiKey = process.env.PERPLEXITY_API_KEY;
-    if (!apiKey) {
-      console.error('PERPLEXITY_API_KEY not configured');
+    // Fetch user's encrypted API key from database
+    const { data: apiKeyData, error: apiKeyError } = await supabase
+      .from('user_api_keys')
+      .select('encrypted_api_key')
+      .eq('user_id', session.user.id)
+      .single();
+
+    if (apiKeyError || !apiKeyData) {
       return new Response(
-        JSON.stringify({ error: 'API configuration error' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
+        JSON.stringify({
+          error: 'No API key configured. Please add one in Settings.',
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
+    // Decrypt API key server-side
+    const apiKey = decryptApiKey(apiKeyData.encrypted_api_key);
+
+    // Initialize Perplexity client with user's API key
     const client = new Perplexity({ apiKey });
 
     // Read prompt template from file
@@ -37,12 +62,12 @@ export async function POST(request: NextRequest) {
     const stream = await client.chat.completions.create({
       messages: [
         {
-          role: "user",
-          content: prompt
-        }
+          role: 'user',
+          content: prompt,
+        },
       ],
-      model: "sonar",
-      stream: true
+      model: 'sonar',
+      stream: true,
     });
 
     // Create ReadableStream for response
@@ -61,7 +86,7 @@ export async function POST(request: NextRequest) {
           console.error('Stream error:', error);
           controller.error(error);
         }
-      }
+      },
     });
 
     // Return streaming response
@@ -69,10 +94,9 @@ export async function POST(request: NextRequest) {
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
         'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive'
-      }
+        'Connection': 'keep-alive',
+      },
     });
-
   } catch (error) {
     console.error('API route error:', error);
     return new Response(
