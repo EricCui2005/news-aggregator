@@ -1,4 +1,5 @@
 import { createServerClient } from '@supabase/ssr';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
 export async function createClient() {
@@ -20,11 +21,8 @@ export async function createClient() {
 // Service role client for admin operations (API key encryption)
 // CRITICAL: Only use server-side for sensitive operations
 export function createServiceClient() {
-  return createServerClient(
+  return createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      cookies: {},
-    }
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 }
