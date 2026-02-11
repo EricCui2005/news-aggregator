@@ -24,36 +24,27 @@ export default function Header({ user }: HeaderProps) {
   };
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className="bg-slate-900/80 backdrop-blur-md shadow-lg border-b border-slate-800">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/dashboard" className="text-2xl font-bold text-gray-800">
+        <Link href="/dashboard" className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent hover:from-blue-300 hover:to-blue-500 transition-all duration-300">
           AI News Aggregator
         </Link>
 
         <div className="flex items-center gap-4">
           <Link
             href="/dashboard/settings"
-            className="text-gray-600 hover:text-gray-800 font-medium transition-colors"
+            className="text-gray-300 hover:text-blue-400 font-medium transition-all duration-200 hover:scale-105"
           >
             Settings
           </Link>
 
-          <div className="flex items-center gap-2">
-            {user.user_metadata?.avatar_url && (
-              <img
-                src={user.user_metadata.avatar_url}
-                alt="Profile"
-                className="w-8 h-8 rounded-full"
-              />
-            )}
-            <span className="text-gray-700">
-              {user.user_metadata?.full_name || user.email}
-            </span>
-          </div>
+          <span className="text-gray-400">
+            {user.user_metadata?.full_name || user.email}
+          </span>
 
           <button
             onClick={handleSignOut}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+            className="px-4 py-2 bg-slate-800 text-gray-300 rounded-lg hover:bg-slate-700 hover:text-white transition-all duration-200 border border-slate-700 hover:border-slate-600 hover:shadow-lg hover:shadow-blue-500/20"
           >
             Sign Out
           </button>

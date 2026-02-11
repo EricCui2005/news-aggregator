@@ -21,18 +21,18 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-3xl font-bold text-center mb-2 text-gray-800">
+    <main className="min-h-screen flex items-center justify-center">
+      <div className="bg-slate-900/80 backdrop-blur-md p-8 rounded-lg shadow-2xl border border-slate-800 max-w-md w-full">
+        <h1 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
           AI News Aggregator
         </h1>
-        <p className="text-center text-gray-600 mb-8">
+        <p className="text-center text-gray-400 mb-8">
           Sign in to access your personalized news tabs
         </p>
 
         <button
           onClick={handleGoogleSignIn}
-          className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-gray-700"
+          className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-slate-800 border-2 border-slate-700 rounded-lg hover:bg-slate-700 hover:border-blue-500 transition-all duration-200 font-medium text-gray-300 hover:text-white hover:shadow-lg hover:shadow-blue-500/20"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path

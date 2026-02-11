@@ -2,9 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-gray-100;
+  }
+}
+
 @layer components {
   .prose a {
-    @apply text-blue-600 hover:text-blue-800 underline;
+    @apply text-blue-400 hover:text-blue-300 underline;
     word-break: break-word;
+  }
+
+  .prose {
+    @apply text-gray-300;
+  }
+
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    @apply text-gray-100;
+  }
+
+  .prose strong {
+    @apply text-gray-100;
+  }
+
+  .prose code {
+    @apply text-blue-400;
   }
 }

@@ -17,7 +17,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen">
       <Header user={session.user} />
       <main className="container mx-auto py-8 px-4">{children}</main>
     </div>

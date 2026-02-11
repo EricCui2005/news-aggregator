@@ -55,8 +55,8 @@ export default function DashboardPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
         </div>
       </div>
     );
@@ -70,15 +70,15 @@ export default function DashboardPage() {
   if (tabs.length === 0) {
     return (
       <div className="max-w-2xl mx-auto text-center py-12">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">
+        <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
           Welcome to Your News Dashboard!
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-400 mb-6">
           Get started by creating your first news topic tab.
         </p>
         <button
           onClick={handleAddTab}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg hover:from-blue-500 hover:to-blue-400 transition-all duration-200 font-medium shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-105"
         >
           Create Your First Tab
         </button>

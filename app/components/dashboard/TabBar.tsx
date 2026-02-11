@@ -18,15 +18,15 @@ export default function TabBar({
   onDeleteTab,
 }: TabBarProps) {
   return (
-    <div className="flex gap-2 border-b border-gray-200 mb-6 overflow-x-auto pb-2">
+    <div className="flex gap-2 border-b border-slate-800 mb-6 overflow-x-auto pb-2">
       {tabs.map((tab) => (
         <div key={tab.id} className="flex items-center gap-2">
           <button
             onClick={() => onTabClick(tab.id)}
-            className={`px-4 py-2 rounded-t-lg font-medium transition-colors whitespace-nowrap ${
+            className={`px-4 py-2 rounded-t-lg font-medium transition-all duration-200 whitespace-nowrap ${
               activeTabId === tab.id
-                ? 'bg-white text-blue-600 border-b-2 border-blue-600'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-gradient-to-br from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/30 border-b-2 border-blue-400'
+                : 'bg-slate-800/50 text-gray-400 hover:bg-slate-800 hover:text-blue-400 hover:shadow-md'
             }`}
           >
             {tab.topic || 'New Tab'}
@@ -38,7 +38,7 @@ export default function TabBar({
                 e.stopPropagation();
                 onDeleteTab(tab.id);
               }}
-              className="text-gray-400 hover:text-red-600 text-xl leading-none"
+              className="text-gray-500 hover:text-red-400 text-xl leading-none hover:scale-110 transition-all duration-200"
               title="Delete tab"
             >
               ×
@@ -49,7 +49,7 @@ export default function TabBar({
 
       <button
         onClick={onAddTab}
-        className="px-4 py-2 bg-blue-600 text-white rounded-t-lg hover:bg-blue-700 transition-colors font-medium whitespace-nowrap"
+        className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-t-lg hover:from-blue-500 hover:to-blue-400 transition-all duration-200 font-medium whitespace-nowrap shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105"
       >
         + New Tab
       </button>

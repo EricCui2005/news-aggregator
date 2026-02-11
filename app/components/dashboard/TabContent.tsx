@@ -82,14 +82,14 @@ export default function TabContent({ tab, onUpdateTab }: TabContentProps) {
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             placeholder="Enter a topic (e.g., artificial intelligence)"
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+            className="flex-1 px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-100 placeholder-gray-500 transition-all duration-200"
             disabled={loading}
             required
           />
           <button
             type="submit"
             disabled={loading || !topic.trim()}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
+            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg hover:from-blue-500 hover:to-blue-400 disabled:from-gray-600 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-105 disabled:scale-100 disabled:shadow-none"
           >
             {loading ? 'Loading...' : 'Refresh News'}
           </button>
@@ -103,14 +103,14 @@ export default function TabContent({ tab, onUpdateTab }: TabContentProps) {
       </form>
 
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+        <div className="mb-4 p-4 bg-red-950/50 border border-red-800 rounded-lg text-red-400">
           {error}
         </div>
       )}
 
       {(results || loading) && (
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800">Results</h2>
+        <div className="bg-slate-900/50 backdrop-blur-sm rounded-lg shadow-2xl border border-slate-800 p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-100">Results</h2>
           <div className="prose prose-slate max-w-none">
             {results ? (
               <ReactMarkdown
@@ -121,7 +121,7 @@ export default function TabContent({ tab, onUpdateTab }: TabContentProps) {
                       {...props}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 underline break-words"
+                      className="text-blue-400 hover:text-blue-300 underline break-words transition-colors duration-200"
                     />
                   ),
                 }}
@@ -131,7 +131,7 @@ export default function TabContent({ tab, onUpdateTab }: TabContentProps) {
             ) : (
               'Loading...'
             )}
-            {loading && <span className="animate-pulse ml-1">▊</span>}
+            {loading && <span className="animate-pulse ml-1 text-blue-400">▊</span>}
           </div>
         </div>
       )}
