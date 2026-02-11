@@ -76,8 +76,8 @@ export async function POST(request: NextRequest) {
       async start(controller) {
         try {
           for await (const chunk of stream) {
-            const content = chunk.choices[0]?.delta?.content || '';
-            if (content) {
+            const content = chunk.choices[0]?.delta?.content;
+            if (content && typeof content === 'string') {
               controller.enqueue(encoder.encode(content));
             }
           }
