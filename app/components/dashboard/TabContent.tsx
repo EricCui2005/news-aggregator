@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Tab } from '@/lib/types/tab';
@@ -15,6 +15,13 @@ export default function TabContent({ tab, onUpdateTab }: TabContentProps) {
   const [results, setResults] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Sync topic state when tab changes
+  useEffect(() => {
+    setTopic(tab.topic || '');
+    setResults(''); // Clear results when switching tabs
+    setError(''); // Clear errors when switching tabs
+  }, [tab.id, tab.topic]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
