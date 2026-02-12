@@ -72,6 +72,8 @@ export async function POST(request: NextRequest) {
 
     // Create ReadableStream for response
     const encoder = new TextEncoder();
+    let citations: string[] = [];
+
     const readableStream = new ReadableStream({
       async start(controller) {
         try {
@@ -80,7 +82,20 @@ export async function POST(request: NextRequest) {
             if (content && typeof content === 'string') {
               controller.enqueue(encoder.encode(content));
             }
+
+            // Capture citations if present (they come in the final chunk)
+            if (chunk.citations && Array.isArray(chunk.citations)) {
+              citations = chunk.citations;
+            }
           }
+
+          // Append citations as clickable links at the end
+          if (citations.length > 0) {
+            const citationsSection = '\n\n---\n\n## Sources\n\n' +
+              citations.map((url, index) => `${index + 1}. [${url}](${url})`).join('\n');
+            controller.enqueue(encoder.encode(citationsSection));
+          }
+
           controller.close();
         } catch (error) {
           console.error('Stream error:', error);
