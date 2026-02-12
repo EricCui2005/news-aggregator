@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "8707c6440b15",
+  "session_id": "faf270b9-eee8-434d-8383-1a77c3c021cd",
+  "strategy": "manual-commit",
+  "created_at": "2026-02-12T04:24:51.400985Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/api/news/route.ts"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "05c2906d-078b-4af9-9c47-87de55b6de6d",
+  "token_usage": {
+    "input_tokens": 1748,
+    "cache_creation_tokens": 1022793,
+    "cache_read_tokens": 13768676,
+    "output_tokens": 71704,
+    "api_call_count": 173
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-02-12T04:24:51.326612Z",
+    "agent_lines": 15,
+    "human_added": 104,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 119,
+    "agent_percentage": 12.605042016806722
+  }
+}
