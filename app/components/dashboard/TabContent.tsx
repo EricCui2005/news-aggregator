@@ -23,6 +23,40 @@ export default function TabContent({ tab, onUpdateTab }: TabContentProps) {
     setError(''); // Clear errors when switching tabs
   }, [tab.id, tab.topic]);
 
+  // Post-process text to make inline citations [1], [2] clickable and remove Sources section
+  const processInlineCitations = (text: string): string => {
+    // Extract citations from the Sources section
+    const citationsRegex = /\n\n---\n\n## Sources\n\n((?:\d+\. \[.+?\]\(.+?\)\n?)+)/;
+    const match = text.match(citationsRegex);
+
+    if (!match) return text;
+
+    // Parse individual citations to build a map of number -> URL
+    const citationLines = match[1].trim().split('\n');
+    const citationMap: { [key: number]: string } = {};
+
+    citationLines.forEach(line => {
+      const lineMatch = line.match(/^(\d+)\. \[(.+?)\]\((.+?)\)$/);
+      if (lineMatch) {
+        const num = parseInt(lineMatch[1]);
+        const url = lineMatch[3];
+        citationMap[num] = url;
+      }
+    });
+
+    // Replace inline citations [1], [2], etc. with clickable markdown links
+    let processedText = text;
+    Object.entries(citationMap).forEach(([num, url]) => {
+      const regex = new RegExp(`\\[${num}\\]`, 'g');
+      processedText = processedText.replace(regex, `[[${num}]](${url})`);
+    });
+
+    // Remove the Sources section entirely
+    processedText = processedText.replace(/\n\n---\n\n## Sources\n\n(?:\d+\. \[.+?\]\(.+?\)\n?)+/, '');
+
+    return processedText;
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -55,14 +89,20 @@ export default function TabContent({ tab, onUpdateTab }: TabContentProps) {
       }
 
       const decoder = new TextDecoder();
+      let accumulatedText = '';
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
         const text = decoder.decode(value, { stream: true });
+        accumulatedText += text;
         setResults((prev) => prev + text);
       }
+
+      // After streaming completes, post-process to make inline citations clickable
+      const processedText = processInlineCitations(accumulatedText);
+      setResults(processedText);
 
       // Update last refreshed timestamp
       await onUpdateTab(tab.id, { lastRefreshedAt: new Date().toISOString() });
